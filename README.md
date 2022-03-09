@@ -17,6 +17,7 @@
 - [**Timeline**](#timeline)
   - [**07-03-2022**](#07-03-2022)
   - [**08-03-2022**](#08-03-2022)
+  - [**09-03-2022**](#09-03-2022)
 - [**Made with 💘 and PHP <img src="https://www.vectorlogo.zone/logos/php/php-horizontal.svg" width="60">**](#made-with--and-php-)
 
 # [**Introduction**](#introduction)
@@ -108,6 +109,32 @@ Giao dịch `B` với ID = 6 sẽ ở trong bảng này để chờ các lệnh 
 
 ## [**Topic Number 3**](#topic-number-3)
 
+Để làm đề tài 3, các bạn cần tìm hiểu Trigger là gì ? Sau đó, cần hiểu ý nghĩa của dịch vụ SQL Broker trong SQL Server và SQL Dependency trong C#. 
+
+Nếu chưa biết 2 đứa này là gì thì hãy nhấn vào [**đây**](#) để tìm hiểu nha 😋.
+
+Vậy tại sao phải dùng Trigger ? Vì Trigger là Stored Procedure đặc biệt hoạt động khi có một hành động nào đó xảy ra. Ở đề tài 3, các bạn có thể thấy mỗi khi chúng ta lập một giao dịch mua | bán cổ phiếu. Thì ngay sau khi lập giao dịch xong, bảng giá trực tuyến cần được hoạt động ngay lập tức để hiển thị giá cổ phiếu mới. Và Trigger chính là chìa khóa 🔑 để giải quyết vấn đề này.
+
+Vậy SQL Broker là cái chi chi ? Nó là dịch vụ của SQL Server, dùng để theo dõi các hành động thay đổi dữ liệu trên một bảng dữ liệu nào đó. Nhờ có dịch vụ này mà khi làm có một thao tác xảy ra thì nó sẽ cập nhật dữ liệu trong Data Grid View ngay lập tức.
+Nhược điểm duy nhất là do cần theo dõi nên SQL Broker sẽ liên tục gửi yêu cầu tới SQL Server, do vậy nên nó sẽ bị chậm đi đôi chút.
+
+Để làm đề tài này các bạn sẽ cần tạo thêm một bảng giá trực tuyến có hình thức như dưới 👇
+
+| ID | Giá Mua 1 | Số Lượng Mua 1 | Giá Mua 2 | Số Lượng Mua 2 | Giá Bán 1 | Số Lượng Bán 1 | Giá Bán 2 | Số Lượng Bán 2 | Giá Khớp | Số Lượng Khớp |
+|----|-----------|----------------|-----------|----------------|-----------|----------------|-----------|----------------|----------|---------------|
+|    |           |                |           |                |           |                |           |                |          |               |
+|    |           |                |           |                |           |                |           |                |          |               |
+
+
+Trong cột Giá mua : sẽ lưu tổng khối lượng của 2 giá mua tốt nhất.
+
+Trong cột Giá bán : sẽ lưu tổng khối lượng của 2 giá bán tốt nhất.
+
+Trong 2 cột khớp lệnh : thể hiện giá khớp, số lượng khớp từ giao dịch mới nhất.
+
+> Trong đề tài của mình thì mình có các cột giá mua | bán 3 nữa nhưng chỉ cần như trên là các bạn cũng nắm ý tưởng rồi 🤟
+
+Đến đây thì coi như xong đề tài 3 luôn rồi !
 
 # [**Post Script**](#post-script)
 
@@ -128,5 +155,13 @@ Nếu các bạn thấy bài viết này hữu ích. Đừng ngần ngại tặn
 - Thêm bảng giá trực tuyến
 
 - Viết Trigger ở bảng lệnh đặt và lệnh khớp để cập nhật dữ liệu cho bảng trực tuyến
+
+## [**09-03-2022**](#09-03-2022)
+
+- Tìm hiểu SQL Dependency
+
+- Tìm hiểu dịch vụ SQL Broker
+
+- Hoàn thiện đồ án kết hợp cả đề 2 & 3
 
 # [**Made with 💘 and PHP <img src="https://www.vectorlogo.zone/logos/php/php-horizontal.svg" width="60">**](#made-with-love-and-php)
