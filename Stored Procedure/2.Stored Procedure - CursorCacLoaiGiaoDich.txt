@@ -1,0 +1,44 @@
+- Ý nghĩa: lấy ra các loại giao dịch dựa vào các đối số truyền vào
+Nếu là lệnh mua thì ưu tiên giá đặt(bán) từ lớn tới bé, ngày đặt từ mới tới cũ.
+Nếu là lệnh bán thì ưu tiên giá đặt(mua) từ bé tới lớn, ngày đặt từ mới tới cũ
+
+- Cú pháp
+CREATE PROCEDURE sp_CursorLoaiGiaoDich
+  @OutputCursor CURSOR VARYING OUTPUT, 
+  @MaCoPhieu NVARCHAR(10),
+  @Ngay NVARCHAR(10),
+  @LoaiGiaoDich CHAR 
+AS
+SET DATEFORMAT DMY 
+	IF (@LoaiGiaoDich='M')-- lenh mua thi uu tien gia dat tu lon toi be, ngay dat tu moi tu cu
+	  SET @OutputCursor=CURSOR KEYSET FOR 
+	  SELECT ID,
+		NgayDat, 
+		SoLuong, 
+		GiaDat 
+	  FROM LenhDat 
+	  WHERE MaCoPhieu=@MaCoPhieu 
+	  AND DAY(NgayDat)= DAY(@Ngay)
+	  AND MONTH(NgayDat)= MONTH(@Ngay) 
+	  AND YEAR(NgayDat)= YEAR(@Ngay)  
+	  AND LoaiGiaoDich = @LoaiGiaoDich 
+	  AND SoLuong >0  
+	  ORDER BY GiaDat DESC, NgayDat 
+	ELSE--(@LoaiGiaoDich='B') - lenh ban thi uu tien lay gia dat tu be toi lon, ngay dat tu moi toi cu
+	  SET @OutputCursor=CURSOR KEYSET FOR 
+	  SELECT ID, 
+		 NgayDat, 
+	         SoLuong, 
+		 GiaDat 
+	  FROM LenhDat 
+	  WHERE MaCoPhieu=@MaCoPhieu 
+	  AND DAY(NgayDat) = DAY(@Ngay)
+	  AND MONTH(NgayDat)= MONTH(@Ngay) 
+	  AND YEAR(NgayDat) = YEAR(@Ngay)  
+	  AND LoaiGiaoDich=@LoaiGiaoDich 
+	  AND SoLuong >0  
+	  ORDER BY GiaDat, NgayDat 
+OPEN @OutputCursor
+GO
+
+- Lệnh thử: 

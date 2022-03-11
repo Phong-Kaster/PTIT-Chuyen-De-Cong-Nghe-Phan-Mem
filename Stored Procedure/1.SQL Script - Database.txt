@@ -1,0 +1,71 @@
+create database ChungKhoan
+go
+
+use ChungKhoan
+go
+
+create table LenhDat
+(
+	id int identity(1,1) primary key,
+	MaCoPhieu nchar(7),
+	NgayDat datetime,
+	LoaiGiaoDich nchar(1),
+	LoaiLenh nchar(10),
+	SoLuong int,
+	GiaDat float,
+	TrangThai nvarchar
+);
+go
+
+create table LenhKhop
+(
+	id int identity(1,1) primary key,
+	NgayKhop datetime,
+	SoLuongKhop int,
+	GiaKhop float,
+	idLenhDat int
+);
+go
+
+
+/*
+*@MaCoPhieu CHAR(7), -- mã cổ phiếu
+*
+*@GiaMua1 FLOAT, 	-- giá mua cổ phiếu cao nhất
+*@SoLuongMua1 INT,	-- số lượng cổ phiếu được mua ở giá cao nhất
+*
+*@GiaMua2 FLOAT, 	-- giá mua cổ phiếu cao thứ 2
+*@SoLuongMua2 INT,	-- số lượng cổ phiếu được mua ở giá cao thứ 2
+*
+*@GiaBan1 FLOAT, 	-- giá bán cổ phiếu cao nhất
+*@SoLuongBan1 INT,	-- số lượng cổ phiếu được bán với giá cao nhất
+*
+*@GiaBan2 FLOAT, 	-- giá bán cổ phiếu cao thứ 2
+*@SoLuongBan2 INT	-- số lượng cổ phiếu được bán với giá cao thứ 2
+*
+*@GiaKhop 			-- giá khớp của phiên giao dịch gần nhất
+*@SoLuongKhop		-- số lượng khớp của phiên giao dịch gần nhất
+
+*@TongSo			-- tổng số cổ phiếu đã được khớp
+*/
+create table BangGiaTrucTuyen
+(
+	id int identity(1,1) primary key,
+	MaCoPhieu nvarchar(7),
+	GiaMua1 FLOAT, 
+	SoLuongMua1 INT,
+	GiaMua2 FLOAT, 
+	SoLuongMua2 INT,
+	GiaMua3 FLOAT,
+	SoLuongMua3 INT,
+	GiaBan1 FLOAT, 
+	SoLuongBan1 INT,
+	GiaBan2 FLOAT, 
+	SoLuongBan2 INT,
+	GiaBan3 FLOAT,
+	SoLuongBan3 INT,
+	GiaKhop FLOAT,
+	SoLuongKhop INT,
+	TongSo INT
+)
+go

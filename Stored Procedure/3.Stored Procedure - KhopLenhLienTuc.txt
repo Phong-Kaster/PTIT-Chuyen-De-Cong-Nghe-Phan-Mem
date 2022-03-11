@@ -1,0 +1,121 @@
+- Ý nghĩa: stored procedure này là phiên bản hoàn chỉnh được phát triển dựa theo phiên bản của thầy Thư. 
+Trong này, chúng ta cần hiểu rõ ràng 2 khái niệm: giao dịch đầu vào (Input) và giao dịch được Cursor lấy ra(Cursor).
+Mọi trường dữ liệu của giao dịch đầu vào sẽ được định danh theo cấu trúc: Input + <tên trường dữ liệu>. Ví Dụ: InputMaCoPhieu, InputGiaDat.
+Giao dịch được lấy ra từ Cursor thì các trường dữ liệu sẽ giống như trong tên bảng LenhDat. Ví dụ: ID, MaCoPhieu, GiaDat....
+
+- Thuật toán nòng cốt: Thuật tuấn của sp_KhopLenhLienTuc hoạt động theo tiêu chí: ưu tiên về giá trước, nếu giá bằng nhau thì ưu tiên về thời gian
+Giả sử, chúng ta gửi một lệnh MUA cổ phiếu, thì Cursor trong thuật toán này sẽ tìm tất cả các lệnh BÁN. Các lệnh bán sẽ được sắp xếp theo GIÁ từ bé đến lớn, thời gian từ mới tới cũ
+Ngược lại, chúng ta gửi một lệnh BÁN cổ phiếu, thì Cursor trong thuật toán sẽ tìm tất cả các lệnh MUA. Các lệnh mua sẽ được sắp xếp theo GIÁ từ lớn tới bé, thời gian từ mới tới cũ
+
+- Cú pháp:
+CREATE PROC sp_KhopLenhLienTuc
+	 @InputMaCoPhieu NVARCHAR( 10), 
+	 @InputNgay NVARCHAR( 10),  
+	 @InputLoaiGiaoDich CHAR, 
+	 @InputSoLuong INT, 
+	 @InputGiaDat FLOAT 
+AS
+	SET DATEFORMAT DMY
+	DECLARE @CursorVariable CURSOR ,
+			@ID int, 
+			@NgayDat NVARCHAR( 10), 
+			@SoLuong INT, 
+			@GiaDat FLOAT,  
+			@soluongkhop INT, 
+			@giakhop FLOAT
+
+	IF (@InputLoaiGiaoDich='B')
+		EXEC sp_CursorLoaiGiaoDich  @CursorVariable OUTPUT, @InputMaCoPhieu,@InputNgay, 'M'
+	ELSE 
+		EXEC sp_CursorLoaiGiaoDich  @CursorVariable OUTPUT, @InputMaCoPhieu,@InputNgay, 'B'
+  
+	FETCH NEXT FROM @CursorVariable  INTO @ID, @NgayDat , @SoLuong , @GiaDat 
+	WHILE (@@FETCH_STATUS <> -1 AND @InputSoLuong >0)
+	BEGIN
+	 IF  (@InputLoaiGiaoDich='B' )-- lenh input la 'B', các lệnh trong Cursor sẽ là các lệnh mua
+		  IF  (@InputGiaDat <= @GiaDat)
+	      BEGIN
+
+			IF (@InputSoLuong > @SoLuong)
+			BEGIN
+				SET @soluongkhop = @SoLuong
+				SET @giakhop = @GiaDat
+				SET @InputSoLuong = @InputSoLuong - @SoLuong
+
+				UPDATE dbo.LenhDat
+				SET SoLuong = 0,
+					TrangThai = N'Khớp Hết'
+				WHERE CURRENT OF @CursorVariable -- cập nhật dữ liệu tại record mà cursor đang đứng
+			END
+
+			ELSE -- (@InputSoLuong =< @SoLuong )
+			BEGIN
+			   SET @soluongkhop = @InputSoLuong
+			   SET @giakhop = @GiaDat
+
+			   UPDATE dbo.LenhDat  
+			   SET SoLuong = SoLuong - @InputSoLuong,
+					TrangThai = N'Khớp Lệnh Một Phần'
+			   WHERE CURRENT OF @CursorVariable
+			   SET @InputSoLuong = 0
+			END
+
+		 -- Cập nhật table LENHKHOP
+		 INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
+		 VALUES (GETDATE(),@soluongkhop,@giakhop, @ID )
+
+		 END -- end IF (@InputGiaDat <= @GiaDat)
+		 ELSE 
+			GOTO THOAT
+
+	 ELSE --  (@InputLoaiGiaoDich='M' ) -- lenh input là 'M', các lệnh trong Cursor sẽ là lệnh bán 
+		   IF( @InputGiaDat >= @GiaDat )
+		   BEGIN
+			  IF( @InputSoLuong > @SoLuong)
+			  BEGIN
+				  SET @soluongkhop = @SoLuong
+				  SET @giakhop = @GiaDat
+				  SET @InputSoLuong = @InputSoLuong - @SoLuong
+
+				  UPDATE dbo.LenhDat
+				  SET SoLuong = 0,
+					TrangThai = N'Khớp Hết'
+				  WHERE CURRENT OF @CursorVariable
+			  END
+
+			  ELSE -- (@InputSoLuong < @SoLuong )
+			  BEGIN
+				 SET @soluongkhop = @InputSoLuong
+				 SET @giakhop = @GiaDat
+				 
+
+				 UPDATE dbo.LenhDat
+				 SET SoLuong = SoLuong - @InputSoLuong,
+					TrangThai = N'Khớp Lệnh Một Phần'
+				 WHERE CURRENT OF @CursorVariable
+
+				 SET @InputSoLuong = 0
+			  END
+
+			  -- Cập nhật table LENHKHOP
+			  INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
+			  VALUES (GETDATE(),@soluongkhop,@giakhop, @ID )
+		   END
+		   ELSE
+			 GOTO THOAT
+	   FETCH NEXT FROM @CursorVariable INTO @ID,  @NgayDat , @SoLuong , @GiaDat -- đọc dòng kế tiếp để xử lý
+	END
+THOAT:
+	--Update table LENHDAT nếu số lượng mua bán > 0
+	IF(@InputSoLuong >0)
+	BEGIN
+		INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
+		VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Chờ Khớp')
+	END
+		CLOSE @CursorVariable 
+		DEALLOCATE @CursorVariable
+		
+- Câu lệnh thử nghiệm
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-08', 'B', 2700, 9000
+
+exec [sp_KhopLenhLienTuc] 'AC', '2022-03-08', 'M', 2700, 12500
