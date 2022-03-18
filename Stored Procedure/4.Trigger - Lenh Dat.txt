@@ -18,15 +18,15 @@ BEGIN
 		DECLARE @CursorVariable CURSOR, -- mở Cursor lấy các mã cổ phiếu tách biệt
 				@MaCoPhieu CHAR(7), -- mã cổ phiếu
 
-				@GiaMua3 FLOAT,		-- giá mua cổ phiếu cao nhất
-				@SoLuongMua3 INT,	-- số lượng cổ phiếu được mua ở giá cao nhất
+				@GiaMua1 FLOAT,		--  giá mua cổ phiếu cao nhất
+				@SoLuongMua1 INT,	--  số lượng cổ phiếu được mua ở giá cao nhất
 
-				@GiaMua2 FLOAT, 	-- giá mua cổ phiếu cao thứ 2
+				@GiaMua2 FLOAT, 		-- giá mua cổ phiếu cao thứ 2
 				@SoLuongMua2 INT,	-- số lượng cổ phiếu được mua ở giá cao thứ 2
 
-				@GiaMua1 FLOAT, 	-- giá mua cổ phiếu cao thứ 3
-				@SoLuongMua1 INT,	-- số lượng cổ phiếu được mua ở giá cao thứ 3
-				
+				@GiaMua3 FLOAT,		-- giá mua cổ phiếu cao thứ 3
+				@SoLuongMua3 INT,	--  số lượng cổ phiếu được mua ở giá cao thứ 3
+
 				
 				@GiaBan1 FLOAT, 	-- giá bán cổ phiếu nhỏ nhất
 				@SoLuongBan1 INT,	-- số lượng cổ phiếu được bán với giá nhỏ nhất
@@ -44,25 +44,25 @@ BEGIN
 		WHILE(@@FETCH_STATUS <>-1)
 		BEGIN
 			
-			SET @GiaMua3 = (SELECT MAX(GIADAT) 
+			SET @GiaMua1 = (SELECT MAX(GIADAT) 
 				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE))
 				-----------
-			SET @SoLuongMua3 = (SELECT SUM(SOLUONG) 
-				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua3)
+			SET @SoLuongMua1 = (SELECT SUM(SOLUONG) 
+				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua1)
 				--------------
 
 			SET @GiaMua2 = (SELECT MAX(GIADAT) 
-				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT < @GiaMua3)
+				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT < @GiaMua1)
 				----------------------
 			SET @SoLuongMua2 = (SELECT SUM(SOLUONG) 
 				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua2)
 				----------------------
 
-			SET @GiaMua1 = (SELECT MAX(GIADAT) 
+			SET @GiaMua3 = (SELECT MAX(GIADAT) 
 				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT < @GiaMua2)
 				----------------------
-			SET @SoLuongMua1 = (SELECT SUM(SOLUONG) 
-				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua1)
+			SET @SoLuongMua3 = (SELECT SUM(SOLUONG) 
+				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua3)
 				----------------------
 
 			SET @GiaBan1 = (SELECT MIN(GIADAT) 
@@ -86,14 +86,16 @@ BEGIN
 				FROM LENHDAT WHERE MaCoPhieu = @MaCoPhieu AND LoaiGiaoDich='B' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaBan3)
 
 			UPDATE BangGiaTrucTuyen SET 
-										GiaMua3 = @GiaMua3,
-										SoLuongMua3 = @SoLuongMua3,
-
 										GiaMua1 = @GiaMua1,
 										SoLuongMua1 = @SoLuongMua1,
 
 										GiaMua2 = @GiaMua2, 
 										SoLuongMua2 = @SoLuongMua2,
+
+										GiaMua3 = @GiaMua3,
+										SoLuongMua3 = @SoLuongMua3,
+
+										
 										
 										GiaBan1 = @GiaBan1, 
 										SoLuongBan1 = @SoLuongBan1,
@@ -113,11 +115,11 @@ BEGIN
 	BEGIN
 		DECLARE @MA CHAR(7)
 		SET @MA = (SELECT MaCoPhieu FROM inserted)
-		SET @GiaMua3 = (SELECT MAX(GIADAT) 
+		SET @GiaMua1 = (SELECT MAX(GIADAT) 
 				FROM LENHDAT WHERE MaCoPhieu = @MA AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE))
 				
-		SET @SoLuongMua3 = (SELECT SUM(SOLUONG) 
-				FROM LENHDAT WHERE MaCoPhieu = @MA AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua3)
+		SET @SoLuongMua1 = (SELECT SUM(SOLUONG) 
+				FROM LENHDAT WHERE MaCoPhieu = @MA AND LoaiGiaoDich='M' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaMua1)
 				
 		SET @GiaBan1 = (SELECT MIN(GIADAT) 
 				FROM LENHDAT WHERE MaCoPhieu = @MA AND LoaiGiaoDich='B' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE))
@@ -125,7 +127,7 @@ BEGIN
 		SET @SoLuongBan1 = (SELECT SUM(SOLUONG) 
 				FROM LENHDAT WHERE MaCoPhieu = @MA AND LoaiGiaoDich='B' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaBan1)
 				
-		INSERT INTO BangGiaTrucTuyen(MaCoPhieu, GiaMua3, SoLuongMua3, GiaBan1, SoLuongBan1, TongSo)
-		VALUES(@MA, @GiaMua3, @SoLuongMua3, @GiaBan1, @SoLuongBan1, 0)
+		INSERT INTO BangGiaTrucTuyen(MaCoPhieu, GiaMua1, SoLuongMua1, GiaBan1, SoLuongBan1, TongSo)
+		VALUES(@MA, @GiaMua1, @SoLuongMua1, @GiaBan1, @SoLuongBan1, 0)
 	END
 END

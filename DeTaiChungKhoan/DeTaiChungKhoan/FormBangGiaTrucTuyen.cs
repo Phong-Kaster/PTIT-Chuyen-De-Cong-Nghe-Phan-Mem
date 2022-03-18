@@ -38,7 +38,15 @@ namespace DeTaiChungKhoan
 
         private String GetSQL()
         {
-            return "select * from dbo.BangGiaTrucTuyen";
+            return "select GiaMua1,SoLuongMua1," +
+                "       GiaMua2,SoLuongMua2," +
+                "       GiaMua3,SoLuongMua3," +
+                "       GiaKhop,SoLuongKhop," +
+                "       GiaBan1,SoLuongBan1," +
+                "       GiaBan2,SoLuongBan2," +
+                "       GiaBan3,SoLuongBan3," +
+                "       TongSo, MaCoPhieu" +
+                " from dbo.BangGiaTrucTuyen";
         }
         public FormBangGiaTrucTuyen()
         {

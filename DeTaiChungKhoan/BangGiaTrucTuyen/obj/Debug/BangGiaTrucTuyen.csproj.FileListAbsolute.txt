@@ -45,3 +45,4 @@ C:\Users\phong\Downloads\PTIT-Chuyen-De-Cong-Nghe-Phan-Mem\DeTaiChungKhoan\BangG
 C:\Users\phong\Downloads\PTIT-Chuyen-De-Cong-Nghe-Phan-Mem\DeTaiChungKhoan\BangGiaTrucTuyen\obj\Debug\BangGiaTrucTuyen.csproj.CoreCompileInputs.cache
 C:\Users\phong\Downloads\PTIT-Chuyen-De-Cong-Nghe-Phan-Mem\DeTaiChungKhoan\BangGiaTrucTuyen\obj\Debug\BangGiaTrucTuyen.exe
 C:\Users\phong\Downloads\PTIT-Chuyen-De-Cong-Nghe-Phan-Mem\DeTaiChungKhoan\BangGiaTrucTuyen\obj\Debug\BangGiaTrucTuyen.pdb
+C:\Users\phong\Downloads\PTIT-Chuyen-De-Cong-Nghe-Phan-Mem\DeTaiChungKhoan\BangGiaTrucTuyen\obj\Debug\BangGiaTrucTuyen.BangGiaTrucTuyen.resources

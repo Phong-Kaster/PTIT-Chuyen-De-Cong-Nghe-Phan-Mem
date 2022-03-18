@@ -164,7 +164,7 @@ namespace DeTaiChungKhoan
             // txtGiaDat
             // 
             this.txtGiaDat.EditValue = new decimal(new int[] {
-            26000,
+            12500,
             0,
             0,
             0});
