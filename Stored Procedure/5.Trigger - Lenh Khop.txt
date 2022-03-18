@@ -2,14 +2,16 @@
 
 - Cú pháp
 CREATE TRIGGER [dbo].[TRIGGER_LENHKHOP]
-ON [dbo].[LENHKHOP] 
+ON [dbo].[LenhKhop] 
 AFTER INSERT
 AS
-DECLARE @MACP CHAR(7)
+DECLARE @MACP NVARCHAR(7)
 BEGIN
 		SET @MACP = (SELECT a.MaCoPhieu FROM LENHDAT a, inserted b WHERE a.ID = b.IDLENHDAT)
-		UPDATE dbo.BangGiaTrucTuyen SET GiaKhop = (SELECT GIAKHOP
-				FROM inserted) WHERE dbo.BangGiaTrucTuyen.MaCoPhieu = @MACP
-		UPDATE dbo.BangGiaTrucTuyen SET SoLuongKhop = (SELECT SoLuongKhop FROM inserted) 
-			WHERE dbo.BangGiaTrucTuyen.MaCoPhieu = @MACP
+
+		UPDATE dbo.BangGiaTrucTuyen 
+		SET GiaKhop = (SELECT GIAKHOP FROM inserted),
+			SoLuongKhop = (SELECT SOLUONGKHOP FROM inserted),
+			TONGSO = TONGSO + (SELECT SOLUONGKHOP FROM inserted)
+		WHERE dbo.BangGiaTrucTuyen.MaCoPhieu = @MACP
 END

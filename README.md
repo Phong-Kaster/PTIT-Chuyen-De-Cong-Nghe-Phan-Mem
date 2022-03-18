@@ -190,23 +190,26 @@ Vậy bảng giá trực tuyến sẽ như sau
 Đến đây thì coi như xong đề tài 3 luôn rồi !
 
 <p align="center">
-    <img src="./avatar/screen2.png" width="1280" />
+    <img src="./avatar/screen4.png" width="1280" />
 </p>
 <space>
 
 <h2 align="center">
 
-  *Giao diện màn hình giao dịch của mình - Screen 1*
+  *Giao diện màn hình ứng dụng*
 </h2>
 
+>Note: Để chạy được 2 ứng dụng trên Visual Studio 2019 cùng lúc hãy vào **Solution->Properties->Common Properties->Startup Project->Chọn Multiple startup project**
+>. Phần action hãy chọn "Start" những ứng dụng bạn mong muốn chạy cùng lúc
+
 <p align="center">
-    <img src="./avatar/screen3.png" width="1280" />
+    <img src="./avatar/screen5.png" width="640" />
 </p>
 <space>
 
 <h2 align="center">
 
-  *Giao diện màn hình giao dịch của mình - Screen 3*
+  *Chọn 2 ứng dụng chạy cùng lúc*
 </h2>
 
 # [**Document**](#document)
