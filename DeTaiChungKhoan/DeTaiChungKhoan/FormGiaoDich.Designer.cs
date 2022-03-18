@@ -120,7 +120,7 @@ namespace DeTaiChungKhoan
             this.btnGiaoDich.Name = "btnGiaoDich";
             this.btnGiaoDich.Size = new System.Drawing.Size(170, 43);
             this.btnGiaoDich.TabIndex = 9;
-            this.btnGiaoDich.Text = "Giao Dịch";
+            this.btnGiaoDich.Text = "Đặt Lệnh";
             this.btnGiaoDich.UseVisualStyleBackColor = false;
             this.btnGiaoDich.Click += new System.EventHandler(this.btnGiaoDich_Click);
             // 
@@ -218,6 +218,7 @@ namespace DeTaiChungKhoan
             this.btnLenhDat.TabIndex = 17;
             this.btnLenhDat.Text = "Lệnh Đặt";
             this.btnLenhDat.UseVisualStyleBackColor = false;
+            this.btnLenhDat.Visible = false;
             this.btnLenhDat.Click += new System.EventHandler(this.btnLenhDat_Click);
             // 
             // btnBangGiaTrucTuyen
@@ -231,6 +232,7 @@ namespace DeTaiChungKhoan
             this.btnBangGiaTrucTuyen.TabIndex = 16;
             this.btnBangGiaTrucTuyen.Text = "Bảng Giá Trực Tuyến";
             this.btnBangGiaTrucTuyen.UseVisualStyleBackColor = false;
+            this.btnBangGiaTrucTuyen.Visible = false;
             this.btnBangGiaTrucTuyen.Click += new System.EventHandler(this.btnBangGiaTrucTuyen_Click);
             // 
             // xtraTabbedMdiManager1
@@ -241,7 +243,7 @@ namespace DeTaiChungKhoan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 751);
+            this.ClientSize = new System.Drawing.Size(1924, 551);
             this.Controls.Add(this.groupBox1);
             this.IsMdiContainer = true;
             this.Name = "FormGiaoDich";

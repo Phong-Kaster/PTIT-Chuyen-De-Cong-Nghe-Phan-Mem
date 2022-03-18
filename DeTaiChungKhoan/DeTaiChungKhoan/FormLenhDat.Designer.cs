@@ -72,6 +72,8 @@ namespace DeTaiChungKhoan
             // 
             // lenhDatDataGridView
             // 
+            this.lenhDatDataGridView.AllowUserToAddRows = false;
+            this.lenhDatDataGridView.AllowUserToDeleteRows = false;
             this.lenhDatDataGridView.AutoGenerateColumns = false;
             this.lenhDatDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.lenhDatDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -86,6 +88,7 @@ namespace DeTaiChungKhoan
             this.lenhDatDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lenhDatDataGridView.Location = new System.Drawing.Point(0, 0);
             this.lenhDatDataGridView.Name = "lenhDatDataGridView";
+            this.lenhDatDataGridView.ReadOnly = true;
             this.lenhDatDataGridView.RowHeadersWidth = 56;
             this.lenhDatDataGridView.RowTemplate.Height = 24;
             this.lenhDatDataGridView.Size = new System.Drawing.Size(1005, 496);
@@ -94,57 +97,64 @@ namespace DeTaiChungKhoan
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.DataPropertyName = "MaCoPhieu";
-            this.dataGridViewTextBoxColumn1.HeaderText = "MaCoPhieu";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Mã Cổ Phiếu";
             this.dataGridViewTextBoxColumn1.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Width = 135;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.DataPropertyName = "NgayDat";
-            this.dataGridViewTextBoxColumn2.HeaderText = "NgayDat";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Ngày Đặt";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.Width = 135;
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 150;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.DataPropertyName = "LoaiGiaoDich";
-            this.dataGridViewTextBoxColumn3.HeaderText = "LoaiGiaoDich";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Loại Giao Dịch";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Width = 135;
             // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "LoaiLenh";
-            this.dataGridViewTextBoxColumn4.HeaderText = "LoaiLenh";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Loại Lệnh";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
             this.dataGridViewTextBoxColumn4.Width = 135;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "SoLuong";
-            this.dataGridViewTextBoxColumn5.HeaderText = "SoLuong";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Số Lượng";
             this.dataGridViewTextBoxColumn5.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 135;
             // 
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.DataPropertyName = "GiaDat";
-            this.dataGridViewTextBoxColumn6.HeaderText = "GiaDat";
+            this.dataGridViewTextBoxColumn6.HeaderText = "Giá Đặt";
             this.dataGridViewTextBoxColumn6.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
             this.dataGridViewTextBoxColumn6.Width = 135;
             // 
             // dataGridViewTextBoxColumn7
             // 
             this.dataGridViewTextBoxColumn7.DataPropertyName = "TrangThai";
-            this.dataGridViewTextBoxColumn7.HeaderText = "TrangThai";
+            this.dataGridViewTextBoxColumn7.HeaderText = "Trạng Thái";
             this.dataGridViewTextBoxColumn7.MinimumWidth = 7;
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
             this.dataGridViewTextBoxColumn7.Width = 135;
             // 
             // FormLenhDat

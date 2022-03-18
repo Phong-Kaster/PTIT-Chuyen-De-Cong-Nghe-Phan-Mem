@@ -41,7 +41,17 @@ namespace DeTaiChungKhoan
             cbLoaiGiaoDich.SelectedIndex = 0;
 
             /*Step 2*/
-            
+            Form f = this.CheckExists(typeof(FormLenhDat));
+            if (f != null)
+            {
+                f.Activate();
+            }
+            else
+            {
+                FormLenhDat form = new FormLenhDat();
+                form.MdiParent = this;
+                form.Show();
+            }
         }
 
         /**

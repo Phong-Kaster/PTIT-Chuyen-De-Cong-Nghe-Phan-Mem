@@ -8,7 +8,7 @@ Giả sử, chúng ta gửi một lệnh MUA cổ phiếu, thì Cursor trong thu
 Ngược lại, chúng ta gửi một lệnh BÁN cổ phiếu, thì Cursor trong thuật toán sẽ tìm tất cả các lệnh MUA. Các lệnh mua sẽ được sắp xếp theo GIÁ từ lớn tới bé, thời gian từ mới tới cũ
 
 - Cú pháp:
-CREATE PROC sp_KhopLenhLienTuc
+CREATE PROC [dbo].[sp_KhopLenhLienTuc]
 	 @InputMaCoPhieu NVARCHAR( 10), 
 	 @InputNgay NVARCHAR( 10),  
 	 @InputLoaiGiaoDich CHAR, 
@@ -32,8 +32,8 @@ AS
 	FETCH NEXT FROM @CursorVariable  INTO @ID, @NgayDat , @SoLuong , @GiaDat 
 	WHILE (@@FETCH_STATUS <> -1 AND @InputSoLuong >0)
 	BEGIN
-	 IF  (@InputLoaiGiaoDich='B' )-- lenh input la 'B', các lệnh trong Cursor sẽ là các lệnh mua
-		  IF  (@InputGiaDat <= @GiaDat)
+	 IF  (@InputLoaiGiaoDich='B' )-- mình đang muốn Bán
+		  IF  (@InputGiaDat <= @GiaDat) -- nên mình sẽ tìm những lệnh mua có giá cao nhất trước
 	      BEGIN
 
 			IF (@InputSoLuong > @SoLuong)
@@ -42,10 +42,12 @@ AS
 				SET @giakhop = @GiaDat
 				SET @InputSoLuong = @InputSoLuong - @SoLuong
 
+				-- cập nhật dữ liệu tại record mà cursor đang đứng
 				UPDATE dbo.LenhDat
 				SET SoLuong = 0,
 					TrangThai = N'Khớp Hết'
-				WHERE CURRENT OF @CursorVariable -- cập nhật dữ liệu tại record mà cursor đang đứng
+				WHERE CURRENT OF @CursorVariable 
+
 			END
 
 			ELSE -- (@InputSoLuong =< @SoLuong )
@@ -58,6 +60,7 @@ AS
 					TrangThai = N'Khớp Lệnh Một Phần'
 			   WHERE CURRENT OF @CursorVariable
 			   SET @InputSoLuong = 0
+
 			END
 
 		 -- Cập nhật table LENHKHOP
@@ -68,8 +71,8 @@ AS
 		 ELSE 
 			GOTO THOAT
 
-	 ELSE --  (@InputLoaiGiaoDich='M' ) -- lenh input là 'M', các lệnh trong Cursor sẽ là lệnh bán 
-		   IF( @InputGiaDat >= @GiaDat )
+	 ELSE --  (@InputLoaiGiaoDich='M' ) 
+		   IF( @InputGiaDat >= @GiaDat )-- mình đang mua vào (@Input) nên mình sẽ tìm những lệnh bán có giá thấp trước
 		   BEGIN
 			  IF( @InputSoLuong > @SoLuong)
 			  BEGIN
@@ -81,6 +84,7 @@ AS
 				  SET SoLuong = 0,
 					TrangThai = N'Khớp Hết'
 				  WHERE CURRENT OF @CursorVariable
+
 			  END
 
 			  ELSE -- (@InputSoLuong < @SoLuong )
@@ -95,6 +99,7 @@ AS
 				 WHERE CURRENT OF @CursorVariable
 
 				 SET @InputSoLuong = 0
+
 			  END
 
 			  -- Cập nhật table LENHKHOP
@@ -106,16 +111,65 @@ AS
 	   FETCH NEXT FROM @CursorVariable INTO @ID,  @NgayDat , @SoLuong , @GiaDat -- đọc dòng kế tiếp để xử lý
 	END
 THOAT:
-	--Update table LENHDAT nếu số lượng mua bán > 0
-	IF(@InputSoLuong >0)
-	BEGIN
-		INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
-		VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Chờ Khớp')
-	END
-		CLOSE @CursorVariable 
-		DEALLOCATE @CursorVariable
-		
-- Câu lệnh thử nghiệm
-exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-08', 'B', 2700, 9000
+	IF(@InputSoLuong >0)-- đã khớp nhưng vẫn còn cổ phiểu | không có lệnh nào để khớp thì ghi lại vào bảng chờ lệnh khác gửi tới để khớp
+		BEGIN
+			INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
+			VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Chờ Khớp')
+		END
 
-exec [sp_KhopLenhLienTuc] 'AC', '2022-03-08', 'M', 2700, 12500
+	ELSE
+		BEGIN
+			-- nếu lệnh của mình (@Input) đã được khớp hết nên ghi lại lệnh này vào bảng lệnh đặt
+			INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
+			VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Khớp hết')
+		END
+		
+	CLOSE @CursorVariable 
+	DEALLOCATE @CursorVariable
+		
+- Lưu ý: lúc thử những câu lệnh dưới đây thì cần có lấy ngày hôm nay để đặt vào chỗ ngày giờ
+
+- Câu lệnh thử nghiệm nếu mình là người Mua
+
+-- tạo 3 lệnh bán trong cơ sở dữ liệu
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'B', 2700, 9000
+go
+
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'B', 1000, 10000
+go
+
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'B', 1000, 11000
+go
+
+-- tạo câu lệnh mua của mình 
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'M', 3700, 15000
+go
+
+- Câu lệnh thử nghiệm nếu mình là người Bán
+
+-- tạo 3 lệnh bán trong cơ sở dữ liệu
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'M', 2700, 9000
+go
+
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'M', 1000, 10000
+go
+
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'M', 1000, 11000
+go
+
+-- tạo câu lệnh mua của mình 
+exec [sp_KhopLenhLienTuc] 'ACB', '2022-03-18', 'B', 3700, 5000
+go
+
+
+- Xóa tất cả để thử lệnh lại
+
+delete from dbo.banggiatructuyen
+delete from lenhkhop
+delete from lenhdat
+
+- Xem kết quả
+
+select * from Lenhdat
+select * from lenhkhop
+select * from banggiatructuyen

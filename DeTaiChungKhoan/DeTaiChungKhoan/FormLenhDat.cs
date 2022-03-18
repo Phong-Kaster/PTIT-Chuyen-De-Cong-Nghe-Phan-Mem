@@ -35,10 +35,17 @@ namespace DeTaiChungKhoan
                 return false;
             }
         }
-
+        /*Tuyệt đối không dùng select * from dbo.LenhDat vì sẽ gây tràn bộ nhớ*/
         private String GetSQL()
         {
-            return "select * from dbo.LenhDat";
+            return "select MaCoPhieu," +
+                "           NgayDat," +
+                "           LoaiGiaoDich, " +
+                "           LoaiLenh," +
+                "           SoLuong," +
+                "           GiaDat," +
+                "           TrangThai" +
+                " from dbo.LenhDat";
         }
 
         public FormLenhDat()

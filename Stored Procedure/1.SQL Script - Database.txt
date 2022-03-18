@@ -7,13 +7,13 @@ go
 create table LenhDat
 (
 	id int identity(1,1) primary key,
-	MaCoPhieu nchar(7),
+	MaCoPhieu nvarchar(7),
 	NgayDat datetime,
-	LoaiGiaoDich nchar(1),
+	LoaiGiaoDich nvarchar(1),
 	LoaiLenh nchar(10),
 	SoLuong int,
 	GiaDat float,
-	TrangThai nvarchar
+	TrangThai nvarchar(255)
 );
 go
 
@@ -23,7 +23,8 @@ create table LenhKhop
 	NgayKhop datetime,
 	SoLuongKhop int,
 	GiaKhop float,
-	idLenhDat int
+	idLenhDat int,
+	FOREIGN KEY (idLenhDat) REFERENCES LenhDat(id)
 );
 go
 
@@ -52,12 +53,12 @@ create table BangGiaTrucTuyen
 (
 	id int identity(1,1) primary key,
 	MaCoPhieu nvarchar(7),
-	GiaMua1 FLOAT, 
-	SoLuongMua1 INT,
-	GiaMua2 FLOAT, 
-	SoLuongMua2 INT,
 	GiaMua3 FLOAT,
 	SoLuongMua3 INT,
+	GiaMua2 FLOAT, 
+	SoLuongMua2 INT,
+	GiaMua1 FLOAT, 
+	SoLuongMua1 INT,
 	GiaBan1 FLOAT, 
 	SoLuongBan1 INT,
 	GiaBan2 FLOAT, 
