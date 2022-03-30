@@ -141,13 +141,15 @@ Nhược điểm duy nhất là do cần theo dõi nên SQL Broker sẽ liên t�
 |----|-----------|----------------|-----------|----------------|-----------|----------------|-----------|----------------|----------|---------------|---------|
 
 
-Trong cột Giá mua : sẽ lưu tổng khối lượng của 2 giá mua tốt nhất.
+Trong cột Giá mua : sẽ lưu 2 giá mua tốt nhất. Tức giá mua cao nhất và cao thứ 2 của cổ phiếu đó
 
-Trong cột Giá bán : sẽ lưu tổng khối lượng của 2 giá bán tốt nhất.
+Trong cột Giá bán : sẽ lưu 2 giá bán tốt nhất. Tức giá bán thấp nhất và thấp thứ 2 của cổ phiếu đó
 
-Trong 2 cột khớp lệnh : thể hiện giá khớp, số lượng khớp từ giao dịch mới nhất.
+Trong 2 cột khớp lệnh : thể hiện giá khớp, số lượng khớp từ giao dịch mua hoặc bán mới nhất.
 
 Trong cột Tổng số : sẽ hiển thị tổng số cổ phiếu đã được được khớp lệnh
+
+Trong cột số lượng: sẽ là tổng số lượng cổ phiếu đang được bán với mức giá đó. Ví dụ: một giao dịch bán Tiger là 1000 & một giao dịch bán Tiger khác là 2000 và cùng bán giá 12.000 thì số lượng bán là 3000
 
 > Trong đề tài của mình thì mình có các cột giá mua | bán 3 nữa nhưng chỉ cần như trên là các bạn cũng nắm ý tưởng rồi 🤟
 
