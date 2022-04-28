@@ -154,11 +154,9 @@ Trong cột số lượng: sẽ là tổng số lượng cổ phiếu đang đư
 > Trong đề tài của mình thì mình có các cột giá mua | bán 3 nữa nhưng chỉ cần như trên là các bạn cũng nắm ý tưởng rồi 🤟
 
 
-Ở đề tài số 3, chúng ta sẽ cần dùng tới 2 trigger để hoàn thiện đề tài này, bao gồm:
+Ở đề tài số 3, chúng ta sẽ cần dùng tới 1 trigger để hoàn thiện đề tài này. Trigger này sẽ cập nhật dữ liệu các cột giá mua, giá bán trong bảng giá trực tuyến mỗi khi có một giao dịch được tạo ra.
 
-- Một Trigger trong bảng lệnh đặt, Trigger này sẽ cập nhật dữ liệu các cột giá mua, giá bán trong bảng giá trực tuyến mỗi khi có một giao dịch được tạo ra
-
-- Một Trigger trong bảng lệnh khớp, Trigger này sẽ cập nhật 2 cột khớp lệnh và cột tổng số cổ phiếu đã khớp.
+Để cập nhật tổng số lượng cổ phiếu đã khớp. Các bạn hãy tải dự án này về, mở thư mục `Stored Procedure` & tìm đọc Stored Procedure khớp lệnh liên tục để đọc qua trình tự xử lý của nó.
 
 ### [**Illustration**](#illustration3)
 

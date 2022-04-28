@@ -93,7 +93,7 @@ namespace DeTaiChungKhoan
             // 
             // txtMaCoPhieu
             // 
-            this.txtMaCoPhieu.EditValue = "Panther";
+            this.txtMaCoPhieu.EditValue = "FWD";
             this.txtMaCoPhieu.Location = new System.Drawing.Point(544, 68);
             this.txtMaCoPhieu.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaCoPhieu.Name = "txtMaCoPhieu";
@@ -113,10 +113,10 @@ namespace DeTaiChungKhoan
             // 
             // btnGiaoDich
             // 
-            this.btnGiaoDich.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(194)))), ((int)(((byte)(73)))));
+            this.btnGiaoDich.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(58)))), ((int)(((byte)(122)))));
             this.btnGiaoDich.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGiaoDich.ForeColor = System.Drawing.Color.White;
-            this.btnGiaoDich.Location = new System.Drawing.Point(289, 244);
+            this.btnGiaoDich.Location = new System.Drawing.Point(348, 244);
             this.btnGiaoDich.Name = "btnGiaoDich";
             this.btnGiaoDich.Size = new System.Drawing.Size(170, 43);
             this.btnGiaoDich.TabIndex = 9;
@@ -126,10 +126,10 @@ namespace DeTaiChungKhoan
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(74)))), ((int)(((byte)(69)))));
+            this.button2.BackColor = System.Drawing.Color.Red;
             this.button2.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1025, 244);
+            this.button2.Location = new System.Drawing.Point(903, 244);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(170, 43);
             this.button2.TabIndex = 10;
@@ -212,9 +212,9 @@ namespace DeTaiChungKhoan
             this.btnLenhDat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(179)))), ((int)(((byte)(179)))));
             this.btnLenhDat.Font = new System.Drawing.Font("Tahoma", 9.969231F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLenhDat.ForeColor = System.Drawing.Color.White;
-            this.btnLenhDat.Location = new System.Drawing.Point(760, 244);
+            this.btnLenhDat.Location = new System.Drawing.Point(1148, 244);
             this.btnLenhDat.Name = "btnLenhDat";
-            this.btnLenhDat.Size = new System.Drawing.Size(230, 43);
+            this.btnLenhDat.Size = new System.Drawing.Size(147, 43);
             this.btnLenhDat.TabIndex = 17;
             this.btnLenhDat.Text = "Lệnh Đặt";
             this.btnLenhDat.UseVisualStyleBackColor = false;
@@ -226,7 +226,7 @@ namespace DeTaiChungKhoan
             this.btnBangGiaTrucTuyen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(119)))), ((int)(((byte)(46)))));
             this.btnBangGiaTrucTuyen.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBangGiaTrucTuyen.ForeColor = System.Drawing.Color.White;
-            this.btnBangGiaTrucTuyen.Location = new System.Drawing.Point(505, 244);
+            this.btnBangGiaTrucTuyen.Location = new System.Drawing.Point(594, 244);
             this.btnBangGiaTrucTuyen.Name = "btnBangGiaTrucTuyen";
             this.btnBangGiaTrucTuyen.Size = new System.Drawing.Size(230, 43);
             this.btnBangGiaTrucTuyen.TabIndex = 16;

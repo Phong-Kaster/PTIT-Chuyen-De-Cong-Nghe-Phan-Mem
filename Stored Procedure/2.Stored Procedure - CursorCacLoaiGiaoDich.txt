@@ -42,3 +42,29 @@ OPEN @OutputCursor
 GO
 
 - Lệnh thử: 
+
+DECLARE @id int,
+		@MaCoPhieu nvarchar(7),
+		@NgayDat datetime,
+		@LoaiGiaoDich nvarchar(1),
+		@LoaiLenh nchar(10),
+		@SoLuong int,
+		@GiaDat float,
+		@TrangThai nvarchar(255)
+
+DECLARE myCursor CURSOR
+FOR
+	SELECT * FROM LenhDat
+
+OPEN myCursor
+
+FETCH NEXT FROM myCursor INTO @id, @MaCoPhieu, @NgayDat, @LoaiGiaoDich, @LoaiLenh, @SoLuong, @GiaDat, @TrangThai
+WHILE( @@FETCH_STATUS = 0 )
+BEGIN
+	select @id, @MaCoPhieu , @TrangThai
+	FETCH NEXT FROM myCursor INTO @id, @MaCoPhieu, @NgayDat, @LoaiGiaoDich, @LoaiLenh, @SoLuong, @GiaDat, @TrangThai
+END
+
+
+CLOSE myCursor
+DEALLOCATE myCursor

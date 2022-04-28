@@ -1,6 +1,6 @@
 - Ý nghĩa: stored procedure này là phiên bản hoàn chỉnh được phát triển dựa theo phiên bản của thầy Thư. 
 Trong này, chúng ta cần hiểu rõ ràng 2 khái niệm: giao dịch đầu vào (Input) và giao dịch được Cursor lấy ra(Cursor).
-Mọi trường dữ liệu của giao dịch đầu vào sẽ được định danh theo cấu trúc: Input + <tên trường dữ liệu>. Ví Dụ: InputMaCoPhieu, InputGiaDat.
+Mọi trường dữ liệu của giao dịch đầu vào sẽ Phong được định danh theo cấu trúc: Input + <tên trường dữ liệu>. Ví Dụ: InputMaCoPhieu, InputGiaDat.
 Giao dịch được lấy ra từ Cursor thì các trường dữ liệu sẽ giống như trong tên bảng LenhDat. Ví dụ: ID, MaCoPhieu, GiaDat....
 
 - Thuật toán nòng cốt: Thuật tuấn của sp_KhopLenhLienTuc hoạt động theo tiêu chí: ưu tiên về giá trước, nếu giá bằng nhau thì ưu tiên về thời gian
@@ -22,7 +22,10 @@ AS
 			@SoLuong INT, 
 			@GiaDat FLOAT,  
 			@soluongkhop INT, 
-			@giakhop FLOAT
+			@giakhop FLOAT,
+			@InputSoLuongBanDau INT
+
+	SET @inputSoLuongBanDau = @InputSoLuong -- ghi nhớ số lượng cổ phiếu ban đầu để cuối chương trình so sánh, tìm trạng thái phù hợp
 
 	IF (@InputLoaiGiaoDich='B')
 		EXEC sp_CursorLoaiGiaoDich  @CursorVariable OUTPUT, @InputMaCoPhieu,@InputNgay, 'M'
@@ -32,11 +35,11 @@ AS
 	FETCH NEXT FROM @CursorVariable  INTO @ID, @NgayDat , @SoLuong , @GiaDat 
 	WHILE (@@FETCH_STATUS <> -1 AND @InputSoLuong >0)
 	BEGIN
-	 IF  (@InputLoaiGiaoDich='B' )-- mình đang muốn Bán
-		  IF  (@InputGiaDat <= @GiaDat) -- nên mình sẽ tìm những lệnh mua có giá cao nhất trước
+	 IF  (@InputLoaiGiaoDich='B' )-- lenh @input la 'B', các lệnh trong @Cursor sẽ là các lệnh mua
+		  IF  (@InputGiaDat <= @GiaDat)
 	      BEGIN
 
-			IF (@InputSoLuong > @SoLuong)
+			IF (@InputSoLuong >= @SoLuong)
 			BEGIN
 				SET @soluongkhop = @SoLuong
 				SET @giakhop = @GiaDat
@@ -71,10 +74,10 @@ AS
 		 ELSE 
 			GOTO THOAT
 
-	 ELSE --  (@InputLoaiGiaoDich='M' ) 
-		   IF( @InputGiaDat >= @GiaDat )-- mình đang mua vào (@Input) nên mình sẽ tìm những lệnh bán có giá thấp trước
+	 ELSE --  (@InputLoaiGiaoDich='M' ) -- lenh @input là 'M', các lệnh trong Cursor sẽ là lệnh bán 
+		   IF( @InputGiaDat >= @GiaDat ) -- xét giao dịch 'B' (@Gia Dat ) có giá bán cao hơn @input
 		   BEGIN
-			  IF( @InputSoLuong > @SoLuong)
+			  IF( @InputSoLuong >= @SoLuong)
 			  BEGIN
 				  SET @soluongkhop = @SoLuong
 				  SET @giakhop = @GiaDat
@@ -111,22 +114,68 @@ AS
 	   FETCH NEXT FROM @CursorVariable INTO @ID,  @NgayDat , @SoLuong , @GiaDat -- đọc dòng kế tiếp để xử lý
 	END
 THOAT:
-	IF(@InputSoLuong >0)-- đã khớp nhưng vẫn còn cổ phiểu | không có lệnh nào để khớp thì ghi lại vào bảng chờ lệnh khác gửi tới để khớp
-		BEGIN
-			INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
-			VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Chờ Khớp')
-		END
+	
+	DECLARE @IDLenhDat int
+	DECLARE @TrangThai nvarchar(255)
+	DECLARE @MACP NVARCHAR(7)
 
+	/**
+	* Step 1: tìm ra trạng thái phù hợp của lệnh đặt vừa được thêm vào. Có 3 giá trị: Chờ khớp, Khớp lệnh 1 phần & Khớp hết
+
+	* Step 2: thêm mới vào bảng LỆNH ĐẶT thông tin với trạng thái phù hợp
+
+	* Step 3: nếu trạng thái của nó(@Input) là Khớp lệnh 1 phần hoặc khớp hết thì phải thêm một bản ghi 
+	* chỉ ra lệnh đặt này (@Input) đã khớp với lệnh @Cursor có ID nào
+
+	* Step 4: cập nhật số lượng khớp cho bảng giá trực tuyến
+
+	* Step 5: giải phóng Cursor
+	*/
+
+	/*Step 1*/
+	--Update table LENHDAT nếu số lượng mua bán > 0 và không thay đổi gì sau vòng xử lý phía trên thì nghĩa là không có lệnh nào khớp được
+	IF(@InputSoLuong >0 and @InputSoLuong = @InputSoLuongBanDau )
+		BEGIN
+			SET @TrangThai = N'Chờ Khớp'
+		END
+	-- nếu số lượng > 0 nhưng không còn như số lượng ban đầu thì tức là nó đã khớp lệnh được 1 phần
+    ELSE IF( @InputSoLuong > 0 and  @InputSoLuong != @InputSoLuongBanDau )
+		BEGIN
+			SET @TrangThai = N'Khớp lệnh một phần'
+		END
+	-- số lượng == 0 thì tương đương khớp hết
 	ELSE
 		BEGIN
-			-- nếu lệnh của mình (@Input) đã được khớp hết nên ghi lại lệnh này vào bảng lệnh đặt
-			INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
-			VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Khớp hết')
+			SET @TrangThai = N'Khớp hết'
 		END
 		
+	/*Step 2*/
+	INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
+			VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, @TrangThai)
+
+	
+	/*Step 3*/
+	IF( @TrangThai = N'Khớp lệnh một phần' OR @TrangThai = N'Khớp hết')
+		BEGIN 
+			SET @IDLenhDat = (SELECT TOP 1 id FROM LenhDat ORDER BY ID DESC)
+			INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
+			VALUES (GETDATE(),@soLuongKhop,@giaKhop, @IDLenhDat )
+		END
+	
+	/*Step 4*/
+	IF( @TrangThai = N'Khớp lệnh một phần' OR @TrangThai = N'Khớp hết')
+		BEGIN 
+			SET @MACP = (SELECT TOP 1 MaCoPhieu FROM LenhDat ORDER BY ID DESC)
+			UPDATE dbo.BangGiaTrucTuyen 
+			SET GiaKhop = @giaKhop,
+				SoLuongKhop = @soluongkhop,
+				TONGSO = TONGSO + @soLuongKhop
+			WHERE dbo.BangGiaTrucTuyen.MaCoPhieu = @MACP
+		END
+	/*Step 5*/
 	CLOSE @CursorVariable 
 	DEALLOCATE @CursorVariable
-		
+
 - Lưu ý: lúc thử những câu lệnh dưới đây thì cần có lấy ngày hôm nay để đặt vào chỗ ngày giờ
 
 - Câu lệnh thử nghiệm nếu mình là người Mua

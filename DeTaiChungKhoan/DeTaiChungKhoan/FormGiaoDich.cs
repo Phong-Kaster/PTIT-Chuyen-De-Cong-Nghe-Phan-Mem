@@ -93,7 +93,7 @@ namespace DeTaiChungKhoan
          */
         private void reset()
         {
-            txtMaCoPhieu.Text = "";
+            //txtMaCoPhieu.Text = "";
             txtSoLuong.Value = 0;
             txtGiaDat.Value = 0;
         }
@@ -119,7 +119,7 @@ namespace DeTaiChungKhoan
 
 
             /*Step 2*/
-            string maCoPhieu = txtMaCoPhieu.Text.Trim();
+            string maCoPhieu = txtMaCoPhieu.Text.Trim().ToUpper();
             string today = DateTime.Now.ToString("yyyy-MM-dd");
             string loaiGiaoDich = (string)cbLoaiGiaoDich.SelectedItem;
             
