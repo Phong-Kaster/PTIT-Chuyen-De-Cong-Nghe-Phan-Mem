@@ -66,7 +66,6 @@ create table BangGiaTrucTuyen
 	GiaBan3 FLOAT,
 	SoLuongBan3 INT,
 	GiaKhop FLOAT,
-	SoLuongKhop INT,
-	TongSo INT
+	SoLuongKhop INT
 )
 go

@@ -309,8 +309,6 @@ namespace BangGia {
             
             private global::System.Data.DataColumn columnSoLuongKhop;
             
-            private global::System.Data.DataColumn columnTongSo;
-            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public BangGiaTrucTuyenDataTable() {
@@ -466,14 +464,6 @@ namespace BangGia {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn TongSoColumn {
-                get {
-                    return this.columnTongSo;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -509,23 +499,7 @@ namespace BangGia {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public BangGiaTrucTuyenRow AddBangGiaTrucTuyenRow(
-                        string MaCoPhieu, 
-                        double GiaMua3, 
-                        int SoLuongMua3, 
-                        double GiaMua2, 
-                        int SoLuongMua2, 
-                        double GiaMua1, 
-                        int SoLuongMua1, 
-                        double GiaBan1, 
-                        int SoLuongBan1, 
-                        double GiaBan2, 
-                        int SoLuongBan2, 
-                        double GiaBan3, 
-                        int SoLuongBan3, 
-                        double GiaKhop, 
-                        int SoLuongKhop, 
-                        int TongSo) {
+            public BangGiaTrucTuyenRow AddBangGiaTrucTuyenRow(string MaCoPhieu, double GiaMua3, int SoLuongMua3, double GiaMua2, int SoLuongMua2, double GiaMua1, int SoLuongMua1, double GiaBan1, int SoLuongBan1, double GiaBan2, int SoLuongBan2, double GiaBan3, int SoLuongBan3, double GiaKhop, int SoLuongKhop) {
                 BangGiaTrucTuyenRow rowBangGiaTrucTuyenRow = ((BangGiaTrucTuyenRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         MaCoPhieu,
@@ -542,8 +516,7 @@ namespace BangGia {
                         GiaBan3,
                         SoLuongBan3,
                         GiaKhop,
-                        SoLuongKhop,
-                        TongSo};
+                        SoLuongKhop};
                 rowBangGiaTrucTuyenRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowBangGiaTrucTuyenRow);
                 return rowBangGiaTrucTuyenRow;
@@ -581,7 +554,6 @@ namespace BangGia {
                 this.columnSoLuongBan3 = base.Columns["SoLuongBan3"];
                 this.columnGiaKhop = base.Columns["GiaKhop"];
                 this.columnSoLuongKhop = base.Columns["SoLuongKhop"];
-                this.columnTongSo = base.Columns["TongSo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -617,8 +589,6 @@ namespace BangGia {
                 base.Columns.Add(this.columnGiaKhop);
                 this.columnSoLuongKhop = new global::System.Data.DataColumn("SoLuongKhop", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSoLuongKhop);
-                this.columnTongSo = new global::System.Data.DataColumn("TongSo", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTongSo);
                 this.columnMaCoPhieu.MaxLength = 7;
             }
             
@@ -1002,22 +972,6 @@ namespace BangGia {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int TongSo {
-                get {
-                    try {
-                        return ((int)(this[this.tableBangGiaTrucTuyen.TongSoColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TongSo\' in table \'BangGiaTrucTuyen\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableBangGiaTrucTuyen.TongSoColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsMaCoPhieuNull() {
                 return this.IsNull(this.tableBangGiaTrucTuyen.MaCoPhieuColumn);
             }
@@ -1195,18 +1149,6 @@ namespace BangGia {
             public void SetSoLuongKhopNull() {
                 this[this.tableBangGiaTrucTuyen.SoLuongKhopColumn] = global::System.Convert.DBNull;
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsTongSoNull() {
-                return this.IsNull(this.tableBangGiaTrucTuyen.TongSoColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetTongSoNull() {
-                this[this.tableBangGiaTrucTuyen.TongSoColumn] = global::System.Convert.DBNull;
-            }
         }
         
         /// <summary>
@@ -1383,11 +1325,10 @@ namespace BangGia.ChungKhoanDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("SoLuongBan3", "SoLuongBan3");
             tableMapping.ColumnMappings.Add("GiaKhop", "GiaKhop");
             tableMapping.ColumnMappings.Add("SoLuongKhop", "SoLuongKhop");
-            tableMapping.ColumnMappings.Add("TongSo", "TongSo");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[BangGiaTrucTuyen] ([MaCoPhieu], [GiaMua3], [SoLuongMua3], [GiaMua2], [SoLuongMua2], [GiaMua1], [SoLuongMua1], [GiaBan1], [SoLuongBan1], [GiaBan2], [SoLuongBan2], [GiaBan3], [SoLuongBan3], [GiaKhop], [SoLuongKhop], [TongSo]) VALUES (@MaCoPhieu, @GiaMua3, @SoLuongMua3, @GiaMua2, @SoLuongMua2, @GiaMua1, @SoLuongMua1, @GiaBan1, @SoLuongBan1, @GiaBan2, @SoLuongBan2, @GiaBan3, @SoLuongBan3, @GiaKhop, @SoLuongKhop, @TongSo)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[BangGiaTrucTuyen] ([MaCoPhieu], [GiaMua3], [SoLuongMua3], [GiaMua2], [SoLuongMua2], [GiaMua1], [SoLuongMua1], [GiaBan1], [SoLuongBan1], [GiaBan2], [SoLuongBan2], [GiaBan3], [SoLuongBan3], [GiaKhop], [SoLuongKhop]) VALUES (@MaCoPhieu, @GiaMua3, @SoLuongMua3, @GiaMua2, @SoLuongMua2, @GiaMua1, @SoLuongMua1, @GiaBan1, @SoLuongBan1, @GiaBan2, @SoLuongBan2, @GiaBan3, @SoLuongBan3, @GiaKhop, @SoLuongKhop)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaCoPhieu", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaCoPhieu", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@GiaMua3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "GiaMua3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1404,7 +1345,6 @@ namespace BangGia.ChungKhoanDataSetTableAdapters {
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SoLuongBan3", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SoLuongBan3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@GiaKhop", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "GiaKhop", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SoLuongKhop", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SoLuongKhop", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TongSo", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TongSo", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1422,7 +1362,7 @@ namespace BangGia.ChungKhoanDataSetTableAdapters {
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT MaCoPhieu, GiaMua3, SoLuongMua3, GiaMua2, SoLuongMua2, GiaMua1, SoLuongMua" +
                 "1, GiaBan1, SoLuongBan1, GiaBan2, SoLuongBan2, GiaBan3, SoLuongBan3, GiaKhop, So" +
-                "LuongKhop, TongSo FROM dbo.BangGiaTrucTuyen";
+                "LuongKhop FROM dbo.BangGiaTrucTuyen";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1483,23 +1423,7 @@ namespace BangGia.ChungKhoanDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(
-                    string MaCoPhieu, 
-                    global::System.Nullable<double> GiaMua3, 
-                    global::System.Nullable<int> SoLuongMua3, 
-                    global::System.Nullable<double> GiaMua2, 
-                    global::System.Nullable<int> SoLuongMua2, 
-                    global::System.Nullable<double> GiaMua1, 
-                    global::System.Nullable<int> SoLuongMua1, 
-                    global::System.Nullable<double> GiaBan1, 
-                    global::System.Nullable<int> SoLuongBan1, 
-                    global::System.Nullable<double> GiaBan2, 
-                    global::System.Nullable<int> SoLuongBan2, 
-                    global::System.Nullable<double> GiaBan3, 
-                    global::System.Nullable<int> SoLuongBan3, 
-                    global::System.Nullable<double> GiaKhop, 
-                    global::System.Nullable<int> SoLuongKhop, 
-                    global::System.Nullable<int> TongSo) {
+        public virtual int Insert(string MaCoPhieu, global::System.Nullable<double> GiaMua3, global::System.Nullable<int> SoLuongMua3, global::System.Nullable<double> GiaMua2, global::System.Nullable<int> SoLuongMua2, global::System.Nullable<double> GiaMua1, global::System.Nullable<int> SoLuongMua1, global::System.Nullable<double> GiaBan1, global::System.Nullable<int> SoLuongBan1, global::System.Nullable<double> GiaBan2, global::System.Nullable<int> SoLuongBan2, global::System.Nullable<double> GiaBan3, global::System.Nullable<int> SoLuongBan3, global::System.Nullable<double> GiaKhop, global::System.Nullable<int> SoLuongKhop) {
             if ((MaCoPhieu == null)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
@@ -1589,12 +1513,6 @@ namespace BangGia.ChungKhoanDataSetTableAdapters {
             }
             else {
                 this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
-            }
-            if ((TongSo.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[15].Value = ((int)(TongSo.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 

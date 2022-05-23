@@ -93,7 +93,7 @@ namespace DeTaiChungKhoan
             // 
             // txtMaCoPhieu
             // 
-            this.txtMaCoPhieu.EditValue = "FWD";
+            this.txtMaCoPhieu.EditValue = "Panther";
             this.txtMaCoPhieu.Location = new System.Drawing.Point(544, 68);
             this.txtMaCoPhieu.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaCoPhieu.Name = "txtMaCoPhieu";

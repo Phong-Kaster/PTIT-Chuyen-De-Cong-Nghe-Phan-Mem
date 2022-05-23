@@ -10,6 +10,7 @@
 # [**Table Of Content**](#table-of-content)
 - [**Table Of Content**](#table-of-content)
 - [**Introduction**](#introduction)
+- [**Video**](#video)
 - [**Instructions**](#instructions)
   - [**Topic Number 2**](#topic-number-2)
     - [**Explanation**](#explanation)
@@ -18,6 +19,7 @@
     - [**Explanation**](#explanation-1)
     - [**Illustration**](#illustration-1)
 - [**Document**](#document)
+- [**Score**](#score)
 - [**Post Script**](#post-script)
 - [**Timeline**](#timeline)
   - [**07-03-2022**](#07-03-2022)
@@ -31,6 +33,18 @@ Chào các bạn, lại là mình, Phong nè 😋. Trong đồ án này mình s�
 Với môn này, mình được nhận đề số 2. Tuy nhiên, để tăng thêm kinh nghiệm & tăng độ khó cho game😎. Mình quyết định làm cả đề số 3, cũng chung cơ sở dữ liệu với đề số 2 luôn ! Không nói nhiều nữa .
 
 Los geht's 💥
+
+# [**Video**](#video)
+
+<div align="center">
+    
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=ZtrGcIkKv4U&ab_channel=PhongKaster)
+
+</div>
+
+<h3 align="center">
+
+***Không thích đọc nhiều? Hãy nhấn vào video để xem luôn giải thích thuật toán và chạy chương trình thực tế 😋😋***
 
 # [**Instructions**](#instructions)
 
@@ -221,6 +235,24 @@ Khi tải dự án này về các bạn sẽ có
 - Thư mục Stored Procedure: các SQL Query cần thiết để dựng cơ sở dữ liệu 
 
 - Thư mục Document: tài liệu học tập về các kiến thức được liệt kê bên trên
+
+# [**Score**](#score)
+
+Bất kì ai học những môn do thầy Thư dạy sẽ nhận được một mã gồm 3 chữ số abc thay vì điểm thông thường. Theo như mình biết thì có 2 cách tính điểm sau. Tuy nhiên, cách 1 thường phổ biển hơn & sau khi học đến năm 4 thì mình thấy là cách tính này là ko đổi đối với mọi niên khóa.
+
+Mã điểm là a b c
+
+Cách 1: ( b + c ) % 10
+
+Cách 2: ( a + b + c ) % 10
+
+Cách 3: c
+
+Với khóa của mình cách 3 là lấy luôn chữ số cuối cùng là điểm số. Với số 0 nghĩa là 10 điểm.
+
+Ví dụ 1: 790 -> 10 điểm
+
+Ví dụ 2: 478 -> 8 điểm
 
 # [**Post Script**](#post-script)
 

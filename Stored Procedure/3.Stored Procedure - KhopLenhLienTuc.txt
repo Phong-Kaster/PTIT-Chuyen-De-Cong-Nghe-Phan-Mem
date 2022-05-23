@@ -22,16 +22,24 @@ AS
 			@SoLuong INT, 
 			@GiaDat FLOAT,  
 			@soluongkhop INT, 
-			@giakhop FLOAT,
+			@giakhop FLOAT
+			
+
+	DECLARE @IDLenhDat INT,
 			@InputSoLuongBanDau INT
 
 	SET @inputSoLuongBanDau = @InputSoLuong -- ghi nhớ số lượng cổ phiếu ban đầu để cuối chương trình so sánh, tìm trạng thái phù hợp
+	/*Step 1 - lưu thông tin lệnh đặt vào bảng LỆNH ĐẶT trước*/
+	INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
+	VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, N'Chờ Khớp')
 
+	/*Step 2 - lấy ra các giao dịch tương ứng với lệnh đặt gửi tới*/
 	IF (@InputLoaiGiaoDich='B')
 		EXEC sp_CursorLoaiGiaoDich  @CursorVariable OUTPUT, @InputMaCoPhieu,@InputNgay, 'M'
 	ELSE 
 		EXEC sp_CursorLoaiGiaoDich  @CursorVariable OUTPUT, @InputMaCoPhieu,@InputNgay, 'B'
   
+	/*Step 3 - vòng lặp khớp lệnh đặt vừa gửi tới với các lệnh đã có sẵn trong cơ sở dữ liệu*/
 	FETCH NEXT FROM @CursorVariable  INTO @ID, @NgayDat , @SoLuong , @GiaDat 
 	WHILE (@@FETCH_STATUS <> -1 AND @InputSoLuong >0)
 	BEGIN
@@ -66,9 +74,14 @@ AS
 
 			END
 
-		 -- Cập nhật table LENHKHOP
+		 -- Cập nhật table LENHKHOP - người A bán cho người B bao nhiêu
 		 INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
 		 VALUES (GETDATE(),@soluongkhop,@giakhop, @ID )
+
+		 -- Cập nhật table LENHKHOP - người B mua cho người A bao nhiêu
+		 SET @IDLenhDat = (SELECT TOP 1 id FROM LenhDat ORDER BY ID DESC)
+		 INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
+		 VALUES (GETDATE(),@soLuongKhop,@giaKhop, @IDLenhDat )
 
 		 END -- end IF (@InputGiaDat <= @GiaDat)
 		 ELSE 
@@ -105,9 +118,14 @@ AS
 
 			  END
 
-			  -- Cập nhật table LENHKHOP
+			  -- Cập nhật table LENHKHOP - người A bán cho người B bao nhiêu
 			  INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
 			  VALUES (GETDATE(),@soluongkhop,@giakhop, @ID )
+
+			  -- Cập nhật table LENHKHOP - người B mua cho người A bao nhiêu
+			  SET @IDLenhDat = (SELECT TOP 1 id FROM LenhDat ORDER BY ID DESC)
+			  INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
+			  VALUES (GETDATE(),@soLuongKhop,@giaKhop, @IDLenhDat )
 		   END
 		   ELSE
 			 GOTO THOAT
@@ -115,24 +133,13 @@ AS
 	END
 THOAT:
 	
-	DECLARE @IDLenhDat int
+	/*Step 4 - cập nhật lại trạng thái & số cổ phiếu còn lại sau khi đã khớp lệnh ở Step 3*/
 	DECLARE @TrangThai nvarchar(255)
 	DECLARE @MACP NVARCHAR(7)
+	DECLARE @TongSo int
 
-	/**
-	* Step 1: tìm ra trạng thái phù hợp của lệnh đặt vừa được thêm vào. Có 3 giá trị: Chờ khớp, Khớp lệnh 1 phần & Khớp hết
 
-	* Step 2: thêm mới vào bảng LỆNH ĐẶT thông tin với trạng thái phù hợp
-
-	* Step 3: nếu trạng thái của nó(@Input) là Khớp lệnh 1 phần hoặc khớp hết thì phải thêm một bản ghi 
-	* chỉ ra lệnh đặt này (@Input) đã khớp với lệnh @Cursor có ID nào
-
-	* Step 4: cập nhật số lượng khớp cho bảng giá trực tuyến
-
-	* Step 5: giải phóng Cursor
-	*/
-
-	/*Step 1*/
+	/*Step 4.1 - tìm ra trạng thái phù hợp của lệnh đặt vừa được thêm vào. Có 3 giá trị: Chờ khớp, Khớp lệnh 1 phần & Khớp hết */
 	--Update table LENHDAT nếu số lượng mua bán > 0 và không thay đổi gì sau vòng xử lý phía trên thì nghĩa là không có lệnh nào khớp được
 	IF(@InputSoLuong >0 and @InputSoLuong = @InputSoLuongBanDau )
 		BEGIN
@@ -149,30 +156,16 @@ THOAT:
 			SET @TrangThai = N'Khớp hết'
 		END
 		
-	/*Step 2*/
-	INSERT INTO dbo.LenhDat(MaCoPhieu, NgayDat, LoaiGiaoDich, LoaiLenh, SoLuong, GiaDat, TrangThai)
-			VALUES(@InputMaCoPhieu, GETDATE(), @InputLoaiGiaoDich, N'LO', @InputSoLuong, @InputGiaDat, @TrangThai)
-
-	
-	/*Step 3*/
+	/*Step 4.2 - tiến hành cập nhật nếu số cổ phiếu lúc bắt đầu đã thay đổi so với ban đầu*/
 	IF( @TrangThai = N'Khớp lệnh một phần' OR @TrangThai = N'Khớp hết')
 		BEGIN 
 			SET @IDLenhDat = (SELECT TOP 1 id FROM LenhDat ORDER BY ID DESC)
-			INSERT INTO dbo.LenhKhop(NgayKhop,SoLuongKhop,GiaKhop,idLenhDat)
-			VALUES (GETDATE(),@soLuongKhop,@giaKhop, @IDLenhDat )
+			UPDATE dbo.LenhDat
+			SET TrangThai = @TrangThai, SoLuong = @InputSoLuong
+			WHERE id = @IDLenhDat
 		END
 	
-	/*Step 4*/
-	IF( @TrangThai = N'Khớp lệnh một phần' OR @TrangThai = N'Khớp hết')
-		BEGIN 
-			SET @MACP = (SELECT TOP 1 MaCoPhieu FROM LenhDat ORDER BY ID DESC)
-			UPDATE dbo.BangGiaTrucTuyen 
-			SET GiaKhop = @giaKhop,
-				SoLuongKhop = @soluongkhop,
-				TONGSO = TONGSO + @soLuongKhop
-			WHERE dbo.BangGiaTrucTuyen.MaCoPhieu = @MACP
-		END
-	/*Step 5*/
+	/*Step 5 - giải phóng Cursor sau khi đã hoàn thành nhiệm vụ*/
 	CLOSE @CursorVariable 
 	DEALLOCATE @CursorVariable
 

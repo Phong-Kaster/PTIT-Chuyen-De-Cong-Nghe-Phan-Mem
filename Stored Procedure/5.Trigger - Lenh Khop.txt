@@ -1,0 +1,19 @@
+- Ý nghĩa: mỗi khi có một giá trị được thêm mới vào bảng lệnh khớp thì bảng giá trực tuyến sẽ được cập nhật
+
+- Câu lệnh
+CREATE TRIGGER TRIGGER_LENHKHOP
+ON dbo.LENHKHOP
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	DECLARE @MACP NVARCHAR(7)
+
+	SET @MACP = (SELECT a.MaCoPhieu FROM LENHDAT a, inserted b WHERE a.ID = b.IDLENHDAT)
+		UPDATE BANGGIATRUCTUYEN 
+		SET GIAKHOP = (SELECT GIAKHOP FROM inserted) 
+		WHERE BANGGIATRUCTUYEN.MaCoPhieu = @MACP
+
+		UPDATE BANGGIATRUCTUYEN 
+		SET SoLuongKhop = (SELECT SOLUONGKHOP FROM inserted) 
+		WHERE BANGGIATRUCTUYEN.MaCoPhieu = @MACP
+END

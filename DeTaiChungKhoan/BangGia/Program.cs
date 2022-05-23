@@ -60,7 +60,7 @@ namespace BangGia
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormBangGia());
+            Application.Run(new FormBangGiaTrucTuyen());
         }
     }
 }

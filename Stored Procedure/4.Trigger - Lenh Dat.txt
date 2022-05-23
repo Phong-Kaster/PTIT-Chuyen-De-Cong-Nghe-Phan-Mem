@@ -6,11 +6,19 @@ Nếu một cổ phiếu được thêm mà chưa có tên trong bảng này th�
 với giá đặt cao nhất từ giao dịch MUA & BÁN có giá cao nhất
 
 - Cú pháp: 
-CREATE TRIGGER [dbo].[TRIGGER_LENHDAT]
+USE [ChungKhoan]
+GO
+/****** Object:  Trigger [dbo].[TRIGGER_LENHDAT]    Script Date: Monday, 23-05-2022 04:04:27 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER TRIGGER [dbo].[TRIGGER_LENHDAT]
 ON [dbo].[LenhDat] 
 AFTER INSERT, UPDATE
 AS
 BEGIN
+
 	IF EXISTS (SELECT MaCoPhieu 
 			   FROM dbo.BangGiaTrucTuyen 
 			   WHERE MaCoPhieu = (SELECT MaCoPhieu FROM inserted))-- nếu có sẵn mã cổ phiếu thì cập nhật giá
@@ -127,7 +135,7 @@ BEGIN
 		SET @SoLuongBan1 = (SELECT SUM(SOLUONG) 
 				FROM LENHDAT WHERE MaCoPhieu = @MA AND LoaiGiaoDich='B' AND SOLUONG > 0 AND CAST(NGAYDAT AS DATE) = CAST(GETDATE() AS DATE) AND GIADAT = @GiaBan1)
 				
-		INSERT INTO BangGiaTrucTuyen(MaCoPhieu, GiaMua1, SoLuongMua1, GiaBan1, SoLuongBan1, TongSo)
-		VALUES(@MA, @GiaMua1, @SoLuongMua1, @GiaBan1, @SoLuongBan1, 0)
+		INSERT INTO BangGiaTrucTuyen(MaCoPhieu, GiaMua1, SoLuongMua1, GiaBan1, SoLuongBan1)
+		VALUES(@MA, @GiaMua1, @SoLuongMua1, @GiaBan1, @SoLuongBan1)
 	END
 END
