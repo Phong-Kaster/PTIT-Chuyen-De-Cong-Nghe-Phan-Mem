@@ -38,7 +38,7 @@ Los geht's 💥
 
 <div align="center">
     
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=ZtrGcIkKv4U&ab_channel=PhongKaster)
+[![Watch the video](https://i3.ytimg.com/vi/Lerby0hvw6Y/maxresdefault.jpg)](https://youtu.be/Lerby0hvw6Y)
 
 </div>
 
@@ -168,7 +168,11 @@ Trong cột số lượng: sẽ là tổng số lượng cổ phiếu đang đư
 > Trong đề tài của mình thì mình có các cột giá mua | bán 3 nữa nhưng chỉ cần như trên là các bạn cũng nắm ý tưởng rồi 🤟
 
 
-Ở đề tài số 3, chúng ta sẽ cần dùng tới 1 trigger để hoàn thiện đề tài này. Trigger này sẽ cập nhật dữ liệu các cột giá mua, giá bán trong bảng giá trực tuyến mỗi khi có một giao dịch được tạo ra.
+Ở đề tài số 3, chúng ta sẽ cần dùng tới 2 trigger để hoàn thiện đề tài này. 
+
+- Trigger thứ nhất sẽ cập nhật dữ liệu các cột giá mua, giá bán trong **Bảng giá trực tuyến** mỗi khi có một giao dịch được tạo ra.
+
+- Trigger thứ hai sẽ cập nhật cột giá khớp và số lượng khớp của giao dịch mới nhất vừa được thực hiện trong **Bảng giá trực tuyến**
 
 Để cập nhật tổng số lượng cổ phiếu đã khớp. Các bạn hãy tải dự án này về, mở thư mục `Stored Procedure` & tìm đọc Stored Procedure khớp lệnh liên tục để đọc qua trình tự xử lý của nó.
 
@@ -202,6 +206,8 @@ Vậy bảng giá trực tuyến sẽ như sau
 | Tiger       |           |                |           |                | 10000     | 1600           | 14000     | 1300           | 10000    | 500           | 500      |
 
 Đến đây thì coi như xong đề tài 3 luôn rồi !
+
+> Note: cái phần ngày phải lấy ngày mới nhất tại thời điểm các bạn đang xem bài viết này nha. Ngày '2022-02-22' là ngày mình viết README này😛😛
 
 <p align="center">
     <img src="./avatar/screen4.png" width="1280" />
